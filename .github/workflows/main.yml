@@ -1,29 +1,31 @@
 name: "Pushpendra - AKS Deployment Pipeline with GitHub Actions"
 
 on:
- push:
- workflow_dispatch:
+  push:
+  workflow_dispatch:
 
 env:
- TF_LOG: INFO
+  TF_LOG: INFO
+  KUBECONFIG: D:\yml\.kube\config
 
 jobs:
- aks:
-   name: "AKS Pipeline"
-   runs-on: self-hosted
-   defaults:
-     run:
-       shell: powershell
-       working-directory: .
+  aks:
+    name: "AKS Pipeline"
+    runs-on: self-hosted
 
-   steps:
-     - name: Checkout the repository to the runner
-       uses: actions/checkout@v4
+    defaults:
+      run:
+        shell: powershell
 
-     - name: Configure access from root
-       id: access
-       run: KUBECONFIG=D:\yml\.kube\config
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-     - name: K8s Control Apply
-       id: apply
-       run: kubectl apply -f pyweb.yml
+      - name: Verify kubeconfig
+        run: |
+          echo $env:KUBECONFIG
+          kubectl config get-contexts
+
+      - name: K8s Control Apply
+        run: |
+          kubectl apply -f pyweb.yml
