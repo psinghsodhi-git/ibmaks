@@ -1,4 +1,4 @@
-name: "AKS Deployment Pipeline with GitHub Actions"
+name: "Pushpendra - AKS Deployment Pipeline with GitHub Actions"
 
 on:
  push:
@@ -22,7 +22,7 @@ jobs:
 
      - name: Configure access from root
        id: access
-       run: sudo cp -fr /root/.kube /mnt/d/yml/
+       run: sudo cp -fr /root/.kube $HOME/
 
      - name: K8s Control Apply
        id: apply
