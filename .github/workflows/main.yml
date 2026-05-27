@@ -1,27 +1,29 @@
-name: "Pushpendra - AKS Deployment Pipeline with GitHub Actions"
+name: "AKS Deployment Pipeline with GitHub Actions"
 
 on:
-  push:
-  workflow_dispatch:
+ push:
+ workflow_dispatch:
 
 env:
-  TF_LOG: INFO
+ TF_LOG: INFO
 
 jobs:
-  aks:
-    name: "AKS Pipeline"
-    runs-on: self-hosted
-    defaults:
-      run:
-        shell: bash
-        working-directory: .
+ aks:
+   name: "AKS Pipeline"
+   runs-on: self-hosted
+   defaults:
+     run:
+       shell: bash
+       working-directory: .
 
-    steps:
-      - name: Checkout the repository to the runner
-        uses: actions/checkout@v2
+   steps:
+     - name: Checkout the repository to the runner
+       uses: actions/checkout@v2
 
-      - name: Set path to kubeconfig (Windows)
-        run: echo "KUBECONFIG=D:/yml/.kube/config" >> $GITHUB_ENV
+     - name: Configure access from root
+       id: access
+       run: sudo cp -fr /root/.kube $HOME/
 
-      - name: K8s Control Apply
-        run: kubectl apply -f pyweb.yml
+     - name: K8s Control Apply
+       id: apply
+       run: kubectl apply -f pyweb.yml
