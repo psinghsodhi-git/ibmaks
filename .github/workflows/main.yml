@@ -1,4 +1,4 @@
-name: "AKS Deployment Pipeline with GitHub Actions"
+name: "Pushpendra - AKS Deployment Pipeline with GitHub Actions"
 
 on:
  push:
@@ -13,7 +13,7 @@ jobs:
    runs-on: self-hosted
    defaults:
      run:
-       shell: bash
+       shell: powershell
        working-directory: .
 
    steps:
@@ -22,7 +22,7 @@ jobs:
 
      - name: Configure access from root
        id: access
-       run: sudo cp -fr /root/.kube $HOME/
+       run: KUBECONFIG=D:\yml\.kube\config
 
      - name: K8s Control Apply
        id: apply
